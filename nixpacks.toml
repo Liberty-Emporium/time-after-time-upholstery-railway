@@ -1,0 +1,14 @@
+# Railway volume mount config
+# SQLite database lives at /data/db.sqlite3
+# Uploaded media lives at /data/media
+# These persist across deployments
+
+[phases.setup]
+commands = [
+  "mkdir -p /data/media /data"
+]
+
+[deploy]
+mounts = [
+  { path = "/data", name = "data" }
+]

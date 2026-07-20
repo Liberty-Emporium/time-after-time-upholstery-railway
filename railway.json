@@ -1,0 +1,10 @@
+# Railway config
+[build]
+  builder = "nixpacks"
+  buildCommand = "echo 'Building via Nixpacks with requirements.txt'"
+
+[deploy]
+  startCommand = "bash start.sh"
+
+[volumes]
+  data = "/data"

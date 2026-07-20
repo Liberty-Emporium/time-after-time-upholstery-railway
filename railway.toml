@@ -1,0 +1,7 @@
+# Railway config
+
+[build]
+builder = "nixpacks"
+
+[deploy]
+startCommand = "bash start.sh"

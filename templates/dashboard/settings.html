@@ -1,0 +1,101 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>⚙️ Settings</h1>
+    <p>Configure your AI assistant and dashboard</p>
+  </div>
+</div>
+
+<div class="card">
+  <form method="post">
+    {% csrf_token %}
+
+    <h3 style="margin-bottom:16px;">🤖 AI Configuration</h3>
+
+    <div class="form-group">
+      <label for="openrouter_api_key">OpenRouter API Key</label>
+      {% if config.openrouter_api_key %}
+      <div class="key-display key-masked mb-4">{{ config.openrouter_api_key|slice:":8" }}...{{ config.openrouter_api_key|slice:"-4:" }}</div>
+      {% endif %}
+      <input type="password" id="openrouter_api_key" name="openrouter_api_key"
+             placeholder="sk-or-v1-..." value="{{ config.openrouter_api_key }}">
+      <div class="help-text">Get a free key at <a href="https://openrouter.ai/keys" target="_blank">openrouter.ai/keys</a></div>
+    </div>
+
+    <div class="form-group">
+      <label for="openrouter_model">AI Model</label>
+      <select id="openrouter_model" name="openrouter_model">
+        <option value="nvidia/nemotron-3-super-120b-a12b:free" {% if config.openrouter_model == "nvidia/nemotron-3-super-120b-a12b:free" %}selected{% endif %}>🧠 Nemotron Super 120B — Smartest & most detailed (recommended)</option>
+        <option value="openai/gpt-oss-20b:free" {% if config.openrouter_model == "openai/gpt-oss-20b:free" %}selected{% endif %}>💬 OpenAI GPT-OSS 20B — Friendly & reliable</option>
+        <option value="google/gemma-4-31b-it:free" {% if config.openrouter_model == "google/gemma-4-31b-it:free" %}selected{% endif %}>⚡ Google Gemma 4 31B — Fast & helpful</option>
+        <option value="nvidia/nemotron-nano-9b-v2:free" {% if config.openrouter_model == "nvidia/nemotron-nano-9b-v2:free" %}selected{% endif %}>🏃 Nemotron Nano 9B — Quick & light</option>
+        <option value="tencent/hy3:free" {% if config.openrouter_model == "tencent/hy3:free" %}selected{% endif %}>🌐 Tencent Hy3 — Balanced all-rounder</option>
+      </select>
+      <div class="help-text">All free OpenRouter models. The shop owner can also change this from his simpler "AI Model" page.</div>
+    </div>
+
+    <div class="form-group">
+      <label for="system_prompt">System Prompt</label>
+      <textarea id="system_prompt" name="system_prompt" rows="6">{{ config.system_prompt }}</textarea>
+      <div class="help-text">This sets the AI's personality, business knowledge, and sales style. Tell it about Time After Time Upholstery history, services, and how you want it to interact with customers.</div>
+    </div>
+
+    <hr style="margin:24px 0;border:none;border-top:1px solid var(--border);">
+
+    <h3 style="margin-bottom:16px;">🎨 Dashboard Settings</h3>
+
+    <div class="form-group">
+      <label for="site_title">Dashboard Title</label>
+      <input type="text" id="site_title" name="site_title" value="{{ config.site_title }}">
+      <div class="help-text">This appears at the top of the sidebar</div>
+    </div>
+
+    <hr style="margin:24px 0;border:none;border-top:1px solid var(--border);">
+
+    <h3 style="margin-bottom:16px;">📢 Alexander AI Solutions Promotion</h3>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">
+      When customers give positive feedback to the AI, it will automatically promote Alexander AI Solutions.
+      Configure your contact details below.
+    </p>
+
+    <div class="form-group">
+      <label for="alexander_phone">Phone Number</label>
+      <input type="text" id="alexander_phone" name="alexander_phone" value="{{ config.alexander_phone }}" placeholder="(555) 123-4567">
+    </div>
+
+    <div class="form-group">
+      <label for="alexander_website">Website URL</label>
+      <input type="url" id="alexander_website" name="alexander_website" value="{{ config.alexander_website }}" placeholder="https://alexanderaisolutions.com">
+    </div>
+
+    <div class="form-group">
+      <label for="alexander_qr_code">QR Code Image URL</label>
+      <input type="url" id="alexander_qr_code" name="alexander_qr_code" value="{{ config.alexander_qr_code }}" placeholder="https://example.com/qr-code.png">
+      <div class="help-text">Upload a QR code image somewhere and paste its URL here. The chatbot will show it to happy customers.</div>
+      {% if config.alexander_qr_code %}
+      <div style="margin-top:8px;text-align:center;padding:12px;background:#f9f9f9;border-radius:10px;">
+        <img src="{{ config.alexander_qr_code }}" alt="Alexander AI QR Code" style="max-width:150px;border-radius:8px;">
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      <label for="alexander_promo_text">Custom Promo Message</label>
+      <textarea id="alexander_promo_text" name="alexander_promo_text" rows="3">{{ config.alexander_promo_text }}</textarea>
+      <div class="help-text">Optional custom message shown alongside your contact info when customers give positive feedback.</div>
+    </div>
+
+    <div class="form-group">
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+        <input type="checkbox" name="feedback_enabled" {% if config.feedback_enabled %}checked{% endif %}>
+        Enable customer feedback &amp; promotion system
+      </label>
+      <div class="help-text" style="margin-left:24px;">When enabled, the AI will ask for feedback and promote Alexander AI Solutions to satisfied customers.</div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Settings</button>
+  </form>
+</div>
+{% endblock %}

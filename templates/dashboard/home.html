@@ -1,0 +1,39 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>📷 My Photos</h1>
+    <p>You have {{ photos.count }} photo{{ photos.count|pluralize }} in your gallery</p>
+  </div>
+  <a href="{% url 'dashboard_upload' %}" class="btn btn-primary">➕ Add a Photo</a>
+</div>
+
+{% if photos %}
+<div class="photo-grid">
+  {% for photo in photos %}
+  <div class="photo-card">
+    <img src="{{ photo.image.url }}" alt="{{ photo.title }}" class="photo-img" loading="lazy">
+    <div class="photo-info">
+      <div class="photo-title">{{ photo.title|default:"Untitled Photo" }}</div>
+      <div class="photo-meta">{{ photo.get_category_display }}</div>
+      <div class="photo-meta">Added {{ photo.uploaded_at|date:"M j, Y" }}</div>
+    </div>
+    <div class="photo-actions">
+      <form method="post" action="{% url 'dashboard_delete' photo.id %}" style="width:100%;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger btn-block" data-confirm="Are you sure you want to delete this photo? This cannot be undone.">🗑️ Delete</button>
+      </form>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+  <div class="empty-icon">📷</div>
+  <h3>No photos yet</h3>
+  <p>Your gallery is empty. Click the button below to add your first photo of your work!</p>
+  <a href="{% url 'dashboard_upload' %}" class="btn btn-primary">➕ Add Your First Photo</a>
+</div>
+{% endif %}
+{% endblock %}

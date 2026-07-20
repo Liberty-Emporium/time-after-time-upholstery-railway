@@ -1,0 +1,87 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+{% block extrahead %}
+<style>
+  body { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #1a1818; }
+  .sidebar, .menu-toggle { display: none !important; }
+  .main-content { margin-left: 0 !important; padding: 20px !important; width: 100%; max-width: 100%; }
+  .login-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.45);
+    padding: 36px 32px 28px;
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto;
+    border-top: 5px solid #A01D2D;
+  }
+  .login-brand { text-align: center; margin-bottom: 24px; }
+  .login-brand .brand-icon {
+    width: 56px; height: 56px; background: #A01D2D; border-radius: 14px;
+    display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px;
+  }
+  .login-brand .brand-icon svg { width: 28px; height: 28px; fill: #fff; }
+  .login-brand h1 { font-size: 22px; font-weight: 700; color: #1a1818; margin: 0 0 4px; }
+  .login-brand p { font-size: 14px; color: #707579; margin: 0; }
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-size: 13px; font-weight: 600; color: #555; margin-bottom: 6px; }
+  .form-group input {
+    width: 100%; padding: 12px 14px; font-size: 15px;
+    border: 2px solid #e0e0e0; border-radius: 10px; background: #fafafa;
+    color: #222; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+  }
+  .form-group input:focus {
+    border-color: #A01D2D; box-shadow: 0 0 0 3px rgba(160,29,45,0.15); background: #fff;
+  }
+  .btn-login {
+    width: 100%; padding: 13px; font-size: 16px; font-weight: 600;
+    color: #fff; background: #A01D2D; border: none; border-radius: 10px;
+    cursor: pointer; transition: background 0.2s;
+  }
+  .btn-login:hover { background: #7c1522; }
+  .error-msg {
+    background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca;
+    border-radius: 10px; padding: 12px 14px; font-size: 13px; margin-bottom: 16px;
+  }
+  .login-footer { text-align: center; margin-top: 16px; font-size: 13px; color: #999; }
+  .login-footer a { color: #A01D2D; text-decoration: none; }
+  @media (max-width: 480px) {
+    .login-card { padding: 28px 20px 24px; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="login-card">
+  <div class="login-brand">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24"><path d="M3 3h18v18H3V3zm2 2v14h14V5H5zm3 3h8v2H8V8zm0 4h8v2H8v-2zm0 4h5v2H8v-2z"/></svg>
+    </div>
+    <h1>Time After Time Upholstery</h1>
+    <p>Sign in to your dashboard</p>
+  </div>
+
+  {% if error %}
+  <div class="error-msg">{{ error }}</div>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="Enter your username" required autofocus>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required>
+    </div>
+    <button type="submit" class="btn-login">Sign In</button>
+  </form>
+
+  <div class="login-footer">
+    <a href="/">Back to Time After Time Upholstery</a>
+  </div>
+</div>
+{% endblock %}

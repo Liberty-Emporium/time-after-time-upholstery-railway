@@ -1,0 +1,97 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>➕ Add a Photo</h1>
+    <p>Add a new picture of your work to the gallery</p>
+  </div>
+  <a href="{% url 'dashboard_home' %}" class="btn btn-outline">← Back to My Photos</a>
+</div>
+
+<div class="card">
+  <form method="post" enctype="multipart/form-data" id="uploadForm">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label style="font-size:18px;">Step 1 — Choose a picture</label>
+      <div class="drop-zone" id="dropZone">
+        <div class="dz-icon">📁</div>
+        <p>Tap here to choose a photo from your device</p>
+        <img id="preview" class="preview">
+        <input type="file" name="image" id="fileInput" accept="image/*" required style="display:none;">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="title" style="font-size:18px;">Step 2 — Give it a name</label>
+      <input type="text" id="title" name="title" placeholder="e.g., Dining Chair Reupholstery" style="font-size:18px;padding:14px;">
+    </div>
+
+    <div class="form-group">
+      <label for="description" style="font-size:18px;">Step 3 — Describe the work</label>
+      <textarea id="description" name="description" rows="3" placeholder="e.g., Reupholstered a worn dining chair with new fabric and fresh foam." style="font-size:18px;padding:14px;width:100%;border-radius:10px;border:2px solid #e0e0e0;font-family:inherit;"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="category" style="font-size:18px;">Step 4 — What kind of floor is it?</label>
+      <select id="category" name="category" style="font-size:18px;padding:14px;">
+        <option value="reupholstery">Reupholstery</option>
+        <option value="cushion">Custom Cushion</option>
+        <option value="tile">Tile</option>
+        <option value="laminate">Laminate</option>
+        <option value="vinyl">Vinyl</option>
+        <option value="installation">Installation</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block" style="font-size:20px;padding:18px;">✅ Save Photo to Gallery</button>
+  </form>
+</div>
+
+<script>
+  const dropZone = document.getElementById('dropZone');
+  const fileInput = document.getElementById('fileInput');
+  const preview = document.getElementById('preview');
+
+  dropZone.addEventListener('click', () => fileInput.click());
+
+  dropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZone.classList.add('dragover');
+  });
+
+  dropZone.addEventListener('dragleave', () => {
+    dropZone.classList.remove('dragover');
+  });
+
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    if (e.dataTransfer.files.length) {
+      fileInput.files = e.dataTransfer.files;
+      showPreview(e.dataTransfer.files[0]);
+    }
+  });
+
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files.length) {
+      showPreview(fileInput.files[0]);
+    }
+  });
+
+  function showPreview(file) {
+    if (!file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      preview.src = e.target.result;
+      preview.classList.add('show');
+      dropZone.querySelector('p').textContent = file.name;
+      dropZone.querySelector('.dz-icon').textContent = '✅';
+    };
+    reader.readAsDataURL(file);
+  }
+</script>
+{% endblock %}

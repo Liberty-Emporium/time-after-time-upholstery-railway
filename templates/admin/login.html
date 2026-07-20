@@ -1,0 +1,294 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block title %}{% if form.errors %}{% translate "Error:" %} {% endif %}Sign In | Time After Time Upholstery{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'admin/css/login.css' %}">
+<style>
+  /* ── Override the default admin login.css ── */
+  body {
+    background: #1a1818 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  #container {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    width: 100% !important;
+    max-width: 400px !important;
+    padding: 0 20px !important;
+    margin: 0 !important;
+  }
+  #header {
+    display: none !important;
+  }
+  #content {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  #content-main {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.45);
+    border-top: 5px solid #A01D2D;
+    padding: 40px 36px 32px;
+  }
+  /* ── Logo / Branding ── */
+  .login-brand {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .login-brand .brand-icon {
+    width: 56px;
+    height: 56px;
+    background: #A01D2D;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+  .login-brand .brand-icon svg {
+    width: 30px;
+    height: 30px;
+    fill: #fff;
+  }
+  .login-brand h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a1818;
+    margin: 0 0 4px;
+    line-height: 1.3;
+  }
+  .login-brand p {
+    font-size: 14px;
+    color: #707579;
+    margin: 0;
+  }
+  /* ── Form ── */
+  .form-row {
+    margin-bottom: 18px;
+    padding: 0 !important;
+    overflow: visible !important;
+    border-bottom: none !important;
+  }
+  .form-row label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+    display: block;
+    margin-bottom: 6px;
+    float: none !important;
+    width: auto !important;
+    padding: 0 !important;
+  }
+  .form-row input[type="text"],
+  .form-row input[type="password"] {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    background: #fafafa;
+    color: #222;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+  }
+  .form-row input[type="text"]:focus,
+  .form-row input[type="password"]:focus {
+    border-color: #A01D2D;
+    box-shadow: 0 0 0 3px rgba(160, 29, 45, 0.15);
+    background: #fff;
+  }
+  .form-row .input-group {
+    position: relative;
+  }
+  .form-row .input-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 16px;
+    pointer-events: none;
+  }
+  .form-row input[type="text"]:placeholder-shown ~ .input-icon,
+  .form-row input[type="password"]:placeholder-shown ~ .input-icon {
+    display: none;
+  }
+  /* ── Error messages ── */
+  .errornote {
+    background: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 13px;
+    margin-bottom: 18px;
+    display: block;
+  }
+  .errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 4px 0 0;
+    font-size: 12px;
+    color: #b91c1c;
+  }
+  /* ── Submit ── */
+  .submit-row {
+    padding: 0 !important;
+    margin-top: 24px;
+    border: none !important;
+  }
+  .submit-row input[type="submit"] {
+    width: 100%;
+    padding: 13px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background: #A01D2D;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .submit-row input[type="submit"]:hover {
+    background: #7c1522;
+  }
+  .submit-row input[type="submit"]:active {
+    transform: scale(0.98);
+  }
+  /* ── Password reset link ── */
+  .password-reset-link {
+    text-align: center;
+    margin-top: 16px;
+  }
+  .password-reset-link a {
+    font-size: 13px;
+    color: #A01D2D;
+    text-decoration: none;
+  }
+  .password-reset-link a:hover {
+    text-decoration: underline;
+  }
+  /* ── Footer ── */
+  .login-footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 12px;
+    color: #999;
+  }
+  .login-footer a {
+    color: #A01D2D;
+    text-decoration: none;
+  }
+  /* ── Hide the dark-mode toggle ── */
+  .theme-toggle {
+    display: none !important;
+  }
+  @media (prefers-color-scheme: dark) {
+    body { background: #0e0d0d !important; }
+    #content-main { background: #242440; }
+    .login-brand h1 { color: #fff; }
+    .form-row label { color: #ccc; }
+    .form-row input[type="text"],
+    .form-row input[type="password"] {
+      background: #2a2a48;
+      border-color: #3a3a5c;
+      color: #eee;
+    }
+    .form-row input[type="text"]:focus,
+    .form-row input[type="password"]:focus {
+      border-color: #A01D2D;
+      background: #2a2a48;
+    }
+    .login-brand p { color: #888; }
+  }
+</style>
+{% endblock %}
+
+{% block bodyclass %}login{% endblock %}
+
+{% block usertools %}{% endblock %}
+{% block nav-global %}{% endblock %}
+{% block nav-sidebar %}{% endblock %}
+{% block content_title %}{% endblock %}
+{% block breadcrumbs %}{% endblock %}
+{% block header %}{% endblock %}
+
+{% block content %}
+<div id="content-main">
+  <div class="login-brand">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 3h18v18H3V3zm2 2v14h14V5H5zm3 3h8v2H8V8zm0 4h8v2H8v-2zm0 4h5v2H8v-2z"/>
+      </svg>
+    </div>
+    <h1>Time After Time Upholstery</h1>
+    <p>Sign in to manage your gallery</p>
+  </div>
+
+  {% if form.errors and not form.non_field_errors %}
+  <p class="errornote">
+    {% blocktranslate count counter=form.errors.items|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktranslate %}
+  </p>
+  {% endif %}
+
+  {% if form.non_field_errors %}
+  {% for error in form.non_field_errors %}
+  <p class="errornote">{{ error }}</p>
+  {% endfor %}
+  {% endif %}
+
+  {% if user.is_authenticated %}
+  <p class="errornote">
+    {% blocktranslate trimmed %}
+      You are authenticated as {{ username }}, but are not authorized to
+      access this page. Would you like to login to a different account?
+    {% endblocktranslate %}
+  </p>
+  {% endif %}
+
+  <form action="{{ app_path }}" method="post" id="login-form">
+    {% csrf_token %}
+    <div class="form-row">
+      <label for="id_username">Username</label>
+      <div style="position:relative;">
+        <input type="text" name="username" autofocus autocapitalize="none" autocomplete="username" maxlength="150" required id="id_username" placeholder="Enter your username">
+      </div>
+      {{ form.username.errors }}
+    </div>
+    <div class="form-row">
+      <label for="id_password">Password</label>
+      <div style="position:relative;">
+        <input type="password" name="password" autocomplete="current-password" required id="id_password" placeholder="Enter your password">
+      </div>
+      {{ form.password.errors }}
+      <input type="hidden" name="next" value="{{ next }}">
+    </div>
+
+    {% url 'admin_password_reset' as password_reset_url %}
+    {% if password_reset_url %}
+    <div class="password-reset-link">
+      <a href="{{ password_reset_url }}">{% translate 'Forgotten your password?' %}</a>
+    </div>
+    {% endif %}
+
+    <div class="submit-row">
+      <input type="submit" value="{% translate 'Sign In' %}">
+    </div>
+  </form>
+
+  <div class="login-footer">
+    <a href="/">Back to Time After Time Upholstery</a>
+  </div>
+</div>
+{% endblock %}

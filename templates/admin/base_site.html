@@ -1,0 +1,24 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | Time After Time Upholstery{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'admin/css/custom_admin.css' %}">
+{% endblock %}
+
+{% block branding %}
+<div id="site-name">
+  <a href="{% url 'admin:index' %}" style="display:flex;align-items:center;gap:10px;">
+    <span class="admin-logo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff">
+        <path d="M3 3h18v18H3V3zm2 2v14h14V5H5zm3 3h8v2H8V8zm0 4h8v2H8v-2zm0 4h5v2H8v-2z"/>
+      </svg>
+    </span>
+    <span>Time After Time Upholstery</span>
+  </a>
+</div>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

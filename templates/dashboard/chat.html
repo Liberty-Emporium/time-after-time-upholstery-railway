@@ -1,0 +1,247 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>🤖 AI Assistant</h1>
+    <p>Sell upholstery services, collect leads, and grow Time After Time Upholstery</p>
+  </div>
+  <button class="btn btn-outline btn-sm" onclick="clearChat()">Clear Chat</button>
+</div>
+
+<div class="card">
+  {% if config.openrouter_api_key %}
+  <div class="chat-container">
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-message assistant">
+        <strong>🤖 Time After Time Upholstery AI</strong><br>
+        👋 Welcome! I'm here to help with your upholstery project — reupholstery, custom cushions, antique restoration, and more. What piece are you working on?
+        <div class="msg-time">just now</div>
+      </div>
+    </div>
+
+    <div class="chat-typing" id="chatTyping">
+      <span class="dots"><span></span><span></span><span></span></span>
+      &nbsp; AI is thinking...
+    </div>
+
+    <div class="chat-input-area">
+      <input type="text" id="chatInput" placeholder="Ask about reupholstery, cushions, or pricing..." autofocus>
+      <button id="sendBtn" onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  {% if config.feedback_enabled %}
+  <!-- Feedback & Promo Modal -->
+  <div id="feedbackModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;">
+    <div style="background:#fff;border-radius:16px;padding:32px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+      <div style="font-size:48px;margin-bottom:12px;" id="feedbackEmoji">😊</div>
+      <h3 style="font-size:20px;margin-bottom:8px;" id="feedbackTitle">Thanks for chatting!</h3>
+      <p style="font-size:14px;color:#666;margin-bottom:20px;line-height:1.5;" id="feedbackText">
+        How was your experience with our AI assistant?
+      </p>
+      <div style="display:flex;gap:12px;justify-content:center;margin-bottom:20px;">
+        <button onclick="feedbackPositive()" style="padding:14px 28px;border:none;border-radius:12px;background:#e8f5e9;color:#2e7d32;font-weight:700;font-size:16px;cursor:pointer;">👍 Loved It</button>
+        <button onclick="feedbackNegative()" style="padding:14px 28px;border:none;border-radius:12px;background:#fef2f2;color:#b91c1c;font-weight:700;font-size:16px;cursor:pointer;">👎 Not Really</button>
+      </div>
+      <div id="feedbackResponse" style="display:none;"></div>
+    </div>
+  </div>
+  {% endif %}
+
+  <p style="font-size:12px;color:#999;margin-top:8px;">
+    Model: {{ config.openrouter_model }} &middot;
+    Responses are AI-generated &middot;
+    <a href="{% url 'dashboard_settings' %}">Change settings</a>
+  </p>
+  {% else %}
+  <div class="empty-state">
+    <div class="empty-icon">🔑</div>
+    <h3>AI Assistant Not Configured</h3>
+    <p>Add your OpenRouter API key in Settings to enable the AI chatbot.</p>
+    <a href="{% url 'dashboard_settings' %}" class="btn btn-primary">Go to Settings</a>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+  const chatInput = document.getElementById('chatInput');
+  const chatMessages = document.getElementById('chatMessages');
+  const chatTyping = document.getElementById('chatTyping');
+  const sendBtn = document.getElementById('sendBtn');
+  const sessionId = 'user_{{ user.id }}_{{ user.username }}';
+  let feedbackCount = 0;
+
+  // Alexander AI Solutions promo data from server
+  const PROMO = {
+    phone: "{{ config.alexander_phone|escapejs }}",
+    website: "{{ config.alexander_website|escapejs }}",
+    qrCode: "{{ config.alexander_qr_code|escapejs }}",
+    promoText: "{{ config.alexander_promo_text|escapejs }}",
+    feedbackEnabled: {{ config.feedback_enabled|lower|default:"false" }},
+  };
+
+  function addMessage(role, content, time) {
+    const div = document.createElement('div');
+    div.className = 'chat-message ' + role;
+    if (role === 'assistant') {
+      div.innerHTML = '<strong>🤖 Time After Time Upholstery AI</strong><br>' + content;
+    } else {
+      div.textContent = content;
+    }
+    const timeDiv = document.createElement('div');
+    timeDiv.className = 'msg-time';
+    timeDiv.textContent = time || new Date().toLocaleTimeString();
+    div.appendChild(timeDiv);
+    chatMessages.appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function setLoading(loading) {
+    chatTyping.style.display = loading ? 'block' : 'none';
+    sendBtn.disabled = loading;
+    chatInput.disabled = loading;
+  }
+
+  async function sendMessage() {
+    const message = chatInput.value.trim();
+    if (!message) return;
+
+    addMessage('user', message);
+    chatInput.value = '';
+    setLoading(true);
+
+    try {
+      const response = await fetch('{% url "dashboard_chat_api" %}', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken'),
+        },
+        body: JSON.stringify({
+          message: message,
+          session_id: sessionId,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        addMessage('assistant', '⚠️ ' + data.error);
+      } else {
+        addMessage('assistant', data.message);
+        // Show feedback modal after every 3 interactions
+        if (PROMO.feedbackEnabled) {
+          feedbackCount++;
+          if (feedbackCount >= 3) {
+            setTimeout(showFeedback, 1000);
+            feedbackCount = 0;
+          }
+        }
+      }
+    } catch (err) {
+      addMessage('assistant', '⚠️ Sorry, something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+      chatInput.focus();
+    }
+  }
+
+  function showFeedback() {
+    const modal = document.getElementById('feedbackModal');
+    if (modal) modal.style.display = 'flex';
+  }
+
+  function feedbackPositive() {
+    const responseDiv = document.getElementById('feedbackResponse');
+    const title = document.getElementById('feedbackTitle');
+    const emoji = document.getElementById('feedbackEmoji');
+    const text = document.getElementById('feedbackText');
+
+    title.textContent = '🚀 That\'s Great to Hear!';
+    emoji.textContent = '🎉';
+
+    let promoHtml = '<p style="font-size:14px;color:#333;line-height:1.6;">';
+
+    if (PROMO.promoText) {
+      promoHtml += PROMO.promoText + '<br><br>';
+    }
+
+    promoHtml += 'Want the same kind of AI solution for <strong>your</strong> business?<br>';
+    promoHtml += 'Contact <strong>Jay Alexander</strong> with <strong>Alexander AI Solutions</strong>';
+
+    if (PROMO.phone) {
+      promoHtml += '<br><br>📞 <a href="tel:' + PROMO.phone + '" style="color:#A01D2D;font-size:18px;font-weight:600;text-decoration:none;">' + PROMO.phone + '</a>';
+    }
+    if (PROMO.website) {
+      promoHtml += '<br>🌐 <a href="' + PROMO.website + '" target="_blank" style="color:#A01D2D;">' + PROMO.website + '</a>';
+    }
+    if (PROMO.qrCode) {
+      promoHtml += '<br><br><img src="' + PROMO.qrCode + '" alt="Scan to visit Alexander AI Solutions" style="max-width:150px;border-radius:10px;border:2px solid #eee;">';
+      promoHtml += '<br><span style="font-size:11px;color:#999;">Scan the QR code to learn more</span>';
+    }
+
+    promoHtml += '</p>';
+    responseDiv.innerHTML = promoHtml;
+    responseDiv.style.display = 'block';
+    text.style.display = 'none';
+    document.querySelector('#feedbackModal button').parentElement.style.display = 'none';
+  }
+
+  function feedbackNegative() {
+    const responseDiv = document.getElementById('feedbackResponse');
+    const title = document.getElementById('feedbackTitle');
+    const emoji = document.getElementById('feedbackEmoji');
+
+    title.textContent = 'Thank You for Your Honest Feedback';
+    emoji.textContent = '💪';
+
+    responseDiv.innerHTML = '<p style="font-size:14px;color:#666;line-height:1.6;">We\'re always working to improve the experience at Time After Time Upholstery. Your feedback helps us get better every day. If you\'d like to speak with the shop directly, please call the store.</p>';
+    responseDiv.style.display = 'block';
+    document.querySelector('#feedbackModal button').parentElement.style.display = 'none';
+  }
+
+  chatInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  async function clearChat() {
+    if (!confirm('Clear the chat history?')) return;
+    try {
+      await fetch('{% url "dashboard_clear_chat" %}', {
+        method: 'POST',
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        body: new URLSearchParams({ session_id: sessionId }),
+      });
+      chatMessages.innerHTML = `
+        <div class="chat-message assistant">
+          <strong>🤖 Time After Time Upholstery AI</strong><br>
+          👋 Chat cleared. How can I help you today?
+          <div class="msg-time">just now</div>
+        </div>`;
+      feedbackCount = 0;
+    } catch(e) {}
+  }
+
+  // Focus input on load
+  chatInput.focus();
+</script>
+{% endblock %}

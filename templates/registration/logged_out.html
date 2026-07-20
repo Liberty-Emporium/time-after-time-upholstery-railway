@@ -1,0 +1,93 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}{% translate 'Logged out' %} | Time After Time Upholstery{% endblock %}
+
+{% block extrastyle %}
+<style>
+  body {
+    background: #f0f2f5 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  #container {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    width: 100% !important;
+    max-width: 420px !important;
+    padding: 0 20px !important;
+  }
+  #header { display: none !important; }
+  #content { padding: 0 !important; }
+  #content-main {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    padding: 48px 36px;
+    text-align: center;
+  }
+  .logged-out-icon {
+    width: 56px;
+    height: 56px;
+    background: #A01D2D;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  .logged-out-icon svg {
+    width: 28px;
+    height: 28px;
+    fill: #fff;
+  }
+  h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a1818;
+    margin: 0 0 8px;
+  }
+  #content-main p {
+    font-size: 15px;
+    color: #707579;
+    margin: 0 0 24px;
+    line-height: 1.5;
+  }
+  #content-main a {
+    display: inline-block;
+    padding: 12px 28px;
+    background: #A01D2D;
+    color: #fff !important;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  #content-main a:hover {
+    background: #7c1522;
+  }
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+{% block content_title %}{% endblock %}
+{% block header %}{% endblock %}
+
+{% block content %}
+<div id="content-main">
+  <div class="logged-out-icon">
+    <svg viewBox="0 0 24 24">
+      <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+    </svg>
+  </div>
+  <h1>{% translate 'Signed Out' %}</h1>
+  <p>{% translate "You've been signed out successfully." %}</p>
+  <a href="{% url 'dashboard_login' %}">{% translate 'Sign In Again' %}</a>
+</div>
+{% endblock %}
