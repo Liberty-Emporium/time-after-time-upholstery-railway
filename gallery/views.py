@@ -24,7 +24,6 @@ SERVICE_PAGES = {
         'bullets': [
             'Sofas, loveseats, sectionals & chairs',
             'Frame repair and webbing rebuilds',
-            'Hundreds of fabric swatches — durable to luxury',
             'New foam and padding cut to fit',
             'Free, no-obligation estimates by appointment',
         ],
