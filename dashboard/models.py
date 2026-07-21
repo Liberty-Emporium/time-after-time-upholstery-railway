@@ -8,7 +8,7 @@ class SiteConfig(models.Model):
     openrouter_api_key = models.CharField(max_length=500, blank=True, default="")
     openrouter_model = models.CharField(
         max_length=200,
-        default="tencent/hy3:free",
+        default="nvidia/nemotron-nano-12b-v2-vl:free",
         help_text="Model from OpenRouter (free models only)"
     )
     system_prompt = models.TextField(
