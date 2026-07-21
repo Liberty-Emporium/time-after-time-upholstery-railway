@@ -14,6 +14,7 @@ urlpatterns = [
     path('ai-model/', views.model_settings, name='dashboard_model_settings'),
     path('users/', views.users_list, name='dashboard_users'),
     path('users/create/', views.user_create, name='dashboard_user_create'),
+    path('users/<int:user_id>/role/', views.user_change_role, name='dashboard_user_role'),
     path('users/<int:user_id>/delete/', views.user_delete, name='dashboard_user_delete'),
     path('users/<int:user_id>/password/', views.user_reset_password, name='dashboard_user_password'),
 ]

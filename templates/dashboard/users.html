@@ -73,18 +73,27 @@
           <td style="padding:10px 12px;">{{ u.is_active|yesno:"✅,❌" }}</td>
           <td style="padding:10px 12px;color:var(--text-muted);font-size:13px;">{{ u.date_joined|date:"M j, Y" }}</td>
           <td style="padding:10px 12px;">
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
               <form method="post" action="{% url 'dashboard_user_password' u.id %}" style="display:inline;" onsubmit="return askNewPassword(this);">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-outline btn-sm">🔑 Change PW</button>
               </form>
               {% if u != request.user %}
+              <form method="post" action="{% url 'dashboard_user_role' u.id %}" style="display:inline;">
+                {% csrf_token %}
+                <select name="role" style="font-size:12px;padding:2px 6px;border-radius:6px;border:1px solid var(--border);">
+                  <option value="user" {% if not u.is_staff and not u.is_superuser %}selected{% endif %}>User</option>
+                  <option value="staff" {% if u.is_staff and not u.is_superuser %}selected{% endif %}>Staff</option>
+                  <option value="admin" {% if u.is_superuser %}selected{% endif %}>Admin</option>
+                </select>
+                <button type="submit" class="btn btn-outline btn-sm">Set Role</button>
+              </form>
               <form method="post" action="{% url 'dashboard_user_delete' u.id %}" style="display:inline;" onsubmit="return confirm('Delete user {{ u.username }}?')">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
               </form>
               {% else %}
-              <span style="color:var(--text-muted);font-size:12px;align-self:center;">(you)</span>
+              <span style="color:var(--text-muted);font-size:12px;">(you)</span>
               {% endif %}
             </div>
           </td>

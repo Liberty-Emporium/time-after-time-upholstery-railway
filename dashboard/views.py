@@ -158,6 +158,26 @@ def user_reset_password(request, user_id):
 @login_required(login_url='/dashboard/login/')
 @superuser_required
 @require_POST
+def user_change_role(request, user_id):
+    target = get_object_or_404(User, id=user_id)
+    if target == request.user:
+        messages.error(request, 'You cannot change your own role.')
+        return redirect('dashboard_users')
+    role = request.POST.get('role', '')
+    if role not in ('user', 'staff', 'admin'):
+        messages.error(request, 'Invalid role.')
+        return redirect('dashboard_users')
+    target.is_superuser = (role == 'admin')
+    target.is_staff = (role in ('staff', 'admin'))
+    target.save()
+    label = {'user': 'User', 'staff': 'Staff', 'admin': 'Admin'}[role]
+    messages.success(request, f'Role for "{target.username}" set to {label}.')
+    return redirect('dashboard_users')
+
+
+@login_required(login_url='/dashboard/login/')
+@superuser_required
+@require_POST
 def user_delete(request, user_id):
     target = get_object_or_404(User, id=user_id)
     if target == request.user:
