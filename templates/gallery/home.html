@@ -4,8 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ info.name }} | {{ info.tagline|default:"Liberty, NC — Quality Upholstery" }}</title>
-    <meta name="description" content="{{ info.name }} in Liberty, NC. Furniture reupholstery, custom cushions, antique restoration, and fine upholstery work by appointment. Call {{ info.phone }}.">
+    <title>{{ info.name }} — Furniture Reupholstery &amp; Custom Cushions in Liberty, NC</title>
+    <meta name="description" content="{{ info.name }}, a family-owned upholstery shop in Liberty, NC, offers furniture reupholstery, custom cushions, antique restoration, and leather repair by appointment. Call {{ info.phone }}.">
+    <link rel="canonical" href="{{ site_url }}">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ info.name }}">
+    <meta property="og:title" content="{{ info.name }} — Furniture Reupholstery &amp; Custom Cushions in Liberty, NC">
+    <meta property="og:description" content="Furniture reupholstery, custom cushions, antique restoration &amp; leather repair in Liberty, NC. Call {{ info.phone }}.">
+    <meta property="og:url" content="{{ site_url }}">
+    <meta property="og:image" content="{{ og_image }}">
+    <meta property="og:locale" content="en_US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ info.name }} — Upholstery in Liberty, NC">
+    <meta name="twitter:description" content="Reupholstery, custom cushions &amp; antique restoration in Liberty, NC. Call {{ info.phone }}.">
+    <meta name="twitter:image" content="{{ og_image }}">
     <style>
         /* ── Time After Time Upholstery — Gold & Green Theme ── */
         :root {
@@ -361,6 +374,9 @@
             nav a { margin: 0 10px; font-size: 0.85rem; }
         }
     </style>
+    <script type="application/ld+json">
+    {{ json_ld|safe }}
+    </script>
 </head>
 <body>
 
@@ -382,7 +398,7 @@
 <!-- ─── Hero ─── -->
 <section class="hero">
     <div class="hero-content">
-        <img src="{% static 'brand/tat-emblem.png' %}" alt="{{ info.name }}" class="hero-logo">
+        <img src="{% static 'brand/tat-emblem.png' %}" alt="{{ info.name }}" class="hero-logo" width="300" height="300" decoding="async">
         <div class="hero-services">
             <span>Reupholstery</span><span>Cushions</span><span>Antiques</span>
         </div>
@@ -402,7 +418,7 @@
         <div class="image">
             {% with featured_photos.first as fp %}
             {% if fp %}
-            <img src="{{ fp.image.url }}" alt="{{ fp.title }}" loading="lazy">
+            <img src="{{ fp.image.url }}" alt="{{ fp.title }}" width="1600" height="1200" loading="lazy" decoding="async">
             {% else %}
             <img src="{% static 'brand/tat-emblem.png' %}" alt="{{ info.name }}" loading="lazy">
             {% endif %}
@@ -504,7 +520,7 @@
         {% for photo in photos %}
         <div class="gallery-card" onclick="openLightbox('{{ photo.image.url }}', '{{ photo.title|escapejs }}')">
             <div class="photo-frame">
-                <img src="{{ photo.image.url }}" alt="{{ photo.title }}" loading="lazy">
+                <img src="{{ photo.image.url }}" alt="{{ photo.title }}" width="1600" height="1200" loading="lazy" decoding="async">
             </div>
             <div class="card-body">
                 <span class="card-category">{{ photo.get_category_display }}</span>
