@@ -16,7 +16,7 @@ SERVICE_PAGES = {
         'meta_title': 'Furniture Reupholstery in Liberty, NC | Time After Time Upholstery',
         'meta_description': 'Sofa, chair, loveseat & sectional reupholstery in Liberty, NC. '
                            'New fabric and foam on the frames you love. Free estimates by appointment. '
-                           'Call (336) 328-6480.',
+                           'Call (336) 328-6408.',
         'intro': 'Breathe new life into worn furniture. We reupholster sofas, chairs, loveseats, '
                  'and sectionals — replacing fabric and foam while keeping the frame you already love. '
                  'From a single dining chair to a full sectional, every piece is measured, rebuilt, and '
@@ -33,7 +33,7 @@ SERVICE_PAGES = {
         'h1': 'Custom Cushions in Liberty, NC',
         'meta_title': 'Custom Cushions & Foam in Liberty, NC | Time After Time Upholstery',
         'meta_description': 'Custom-cut cushions and replacement foam in Liberty, NC — window seats, '
-                           'benches, dinettes, and outdoor. Made to fit your piece. Call (336) 328-6480.',
+                           'benches, dinettes, and outdoor. Made to fit your piece. Call (336) 328-6408.',
         'intro': 'Window seats, bench cushions, dinette pads, and replacement foam — cut to fit your '
                  'piece exactly. We rebuild cushions that have gone flat and shape new ones for a clean, '
                  'comfortable seat.',
@@ -50,7 +50,7 @@ SERVICE_PAGES = {
         'h1': 'Antique Restoration in Liberty, NC',
         'meta_title': 'Antique Furniture Restoration in Liberty, NC | Time After Time Upholstery',
         'meta_description': 'Careful antique and heirloom furniture restoration in Liberty, NC. Delicate '
-                           'reupholstery and repair done with respect for the piece. Call (336) 328-6480.',
+                           'reupholstery and repair done with respect for the piece. Call (336) 328-6408.',
         'intro': 'Heirloom and antique pieces deserve care. We handle delicate restoration and '
                  'reupholstery of antique furniture — preserving the character of the original while '
                  'bringing it back to a usable, beautiful state.',
@@ -67,7 +67,7 @@ SERVICE_PAGES = {
         'h1': 'Leather Repair in Liberty, NC',
         'meta_title': 'Leather Furniture Repair in Liberty, NC | Time After Time Upholstery',
         'meta_description': 'Leather couch and chair repair in Liberty, NC — crack repair, recoloring, '
-                           'and conditioning. Bring worn leather back to life. Call (336) 328-6480.',
+                           'and conditioning. Bring worn leather back to life. Call (336) 328-6408.',
         'intro': 'Cracked, faded, or scratched leather doesn\'t mean the end. We repair and recolor '
                  'leather furniture — repairing cracks, restoring color, and conditioning the surface '
                  'so your leather looks cared for again.',
@@ -84,7 +84,7 @@ SERVICE_PAGES = {
         'h1': 'Outdoor & Patio Upholstery in Liberty, NC',
         'meta_title': 'Outdoor & Patio Cushion Upholstery in Liberty, NC | Time After Time Upholstery',
         'meta_description': 'Weather-resistant outdoor and patio cushions in Liberty, NC. Reupholstery and '
-                           'custom cushions built for the elements. Call (336) 328-6480.',
+                           'custom cushions built for the elements. Call (336) 328-6408.',
         'intro': 'Keep your patio comfortable. We build weather-resistant cushions and reupholster outdoor '
                  'furniture with fabrics made to stand up to sun and rain — so your outdoor space looks good '
                  'season after season.',

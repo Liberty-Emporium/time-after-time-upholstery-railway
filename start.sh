@@ -59,7 +59,7 @@ from gallery.models import BusinessInfo
 info = BusinessInfo.get()
 info.name = 'Time After Time Upholstery'
 info.tagline = 'Liberty, NC — Quality Upholstery'
-info.phone = '(336) 328-6480'
+info.phone = '(336) 328-6408'
 info.address = '446 North Greensboro Street, Liberty, NC 27298'
 info.hours = 'Mon–Fri: 9:00 AM – 4:00 PM'
 info.about_text = 'Time After Time Upholstery is Liberty\\'s trusted upholstery shop. We bring worn and beloved furniture back to life — from a single dining chair to a treasured antique sofa passed down through generations. Every piece is personal: we measure, we rebuild, and we stand behind our work with pride.'

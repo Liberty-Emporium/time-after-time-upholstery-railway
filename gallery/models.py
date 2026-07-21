@@ -96,7 +96,7 @@ class Photo(models.Model):
 class BusinessInfo(models.Model):
     name = models.CharField(max_length=200, default="Time After Time Upholstery")
     tagline = models.CharField(max_length=300, blank=True, default="Liberty, NC — Quality Upholstery")
-    phone = models.CharField(max_length=20, default="(336) 328-6480")
+    phone = models.CharField(max_length=20, default="(336) 328-6408")
     address = models.CharField(max_length=300, default="446 North Greensboro Street, Liberty, NC 27298")
     email = models.EmailField(blank=True)
     hours = models.CharField(max_length=200, default="Mon–Fri: 9:00 AM – 4:00 PM")
