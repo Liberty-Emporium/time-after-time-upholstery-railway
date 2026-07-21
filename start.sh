@@ -51,7 +51,7 @@ else:
         u.is_active = True
         u.save()
         print('Created rhonda (password Tat2026!)')
-
+        "
 
 # Seed BusinessInfo with the correct upholstery details
 python manage.py shell -c "
