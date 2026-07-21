@@ -31,17 +31,17 @@ from dashboard.views import FREE_MODELS
 import urllib.request, json
 FREE_IDS = [m[0] for m in FREE_MODELS]
 try:
-    _req = urllib.request.Request("https://openrouter.ai/api/v1/models",
-        headers={"User-Agent":"tat-boot","HTTP-Referer":"https://timeaftertimeupholstery.com"})
+    _req = urllib.request.Request('https://openrouter.ai/api/v1/models',
+        headers={'User-Agent':'tat-boot','HTTP-Referer':'https://timeaftertimeupholstery.com'})
     _data = json.load(urllib.request.urlopen(_req, timeout=20))
-    _live = {m["id"] for m in _data.get("data", [])}
+    _live = {m['id'] for m in _data.get('data', [])}
     _bad = [i for i in FREE_IDS if i not in _live]
     if _bad:
-        print("WARNING: these FREE_MODELS ids are NOT on OpenRouter (will be unusable):", _bad)
+        print('WARNING: these FREE_MODELS ids are NOT on OpenRouter (will be unusable):', _bad)
     else:
-        print("All FREE_MODELS ids verified live on OpenRouter.")
+        print('All FREE_MODELS ids verified live on OpenRouter.')
 except Exception as e:
-    print("WARNING: could not verify FREE_MODELS against OpenRouter:", e)
+    print('WARNING: could not verify FREE_MODELS against OpenRouter:', e)
 cfg = SiteConfig.get()
 if cfg.openrouter_model not in FREE_IDS:
     cfg.openrouter_model = FREE_IDS[0]
