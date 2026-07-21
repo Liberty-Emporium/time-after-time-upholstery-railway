@@ -17,14 +17,41 @@ admin, created = User.objects.get_or_create(username='admin', defaults={'email':
 admin.is_superuser = True
 admin.is_staff = True
 admin.is_active = True
-admin.set_password('Tat2026!')
+admin.set_password('Mhall001!')
 admin.save()
-print('Admin user ready (password set)')
+print('Admin user ready (password set to Mhall001!)')
 
 # Ensure SiteConfig singleton exists
 SiteConfig.get()
 print('SiteConfig ready')
-"
+
+# ── Staff user: rhonda (replaces bryan) — idempotent, password set each deploy ──
+bryan_qs = User.objects.filter(username='bryan')
+if bryan_qs.exists():
+    u = bryan_qs.first()
+    u.username = 'rhonda'
+    u.email = 'rhonda@timeaftertime.com'
+    u.set_password('Tat2026!')
+    u.is_staff = True
+    u.is_active = True
+    u.save()
+    print('Renamed bryan -> rhonda (password set to Tat2026!)')
+else:
+    rhonda_qs = User.objects.filter(username='rhonda')
+    if rhonda_qs.exists():
+        u = rhonda_qs.first()
+        u.set_password('Tat2026!')
+        u.is_staff = True
+        u.is_active = True
+        u.save()
+        print('Ensured rhonda password (Tat2026!)')
+    else:
+        u = User.objects.create_user(username='rhonda', email='rhonda@timeaftertime.com', password='Tat2026!')
+        u.is_staff = True
+        u.is_active = True
+        u.save()
+        print('Created rhonda (password Tat2026!)')
+
 
 # Seed BusinessInfo with the correct upholstery details
 python manage.py shell -c "
