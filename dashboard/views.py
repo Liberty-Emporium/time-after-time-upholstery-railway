@@ -268,31 +268,39 @@ def chat_api(request):
                 "content": msg.content,
             })
 
-        # Call OpenRouter API
-        import requests as http_req
-        response = http_req.post(
+        # Call OpenRouter API (stdlib urllib — no external dependency)
+        import urllib.request as _ureq
+        import urllib.error as _uerr
+        _payload = json.dumps({
+            "model": config.openrouter_model or "openai/gpt-4o-mini",
+            "messages": messages_list,
+            "max_tokens": 2000,
+        }).encode()
+        _oreq = _ureq.Request(
             "https://openrouter.ai/api/v1/chat/completions",
+            data=_payload,
             headers={
                 "Authorization": f"Bearer {api_key}",
                 "Content-Type": "application/json",
                 "HTTP-Referer": "https://time-after-time.up.railway.app",
                 "X-Title": "Time After Time Upholstery AI",
             },
-            json={
-                "model": config.openrouter_model or "openai/gpt-4o-mini",
-                "messages": messages_list,
-                "max_tokens": 2000,
-            },
-            timeout=60,
         )
+        try:
+            _oresp = _ureq.urlopen(_oreq, timeout=60)
+            status_code = _oresp.status
+            resp_text = _oresp.read().decode("utf-8", "replace")
+        except _uerr.HTTPError as _he:
+            status_code = _he.code
+            resp_text = _he.read().decode("utf-8", "replace")
 
-        if response.status_code != 200:
-            error_detail = response.text[:500]
+        if status_code != 200:
+            error_detail = resp_text[:500]
             return JsonResponse({
-                'error': f'OpenRouter API error: {response.status_code}'
+                'error': f'OpenRouter API error: {status_code}'
             }, status=502)
 
-        result = response.json()
+        result = json.loads(resp_text)
         assistant_message = result['choices'][0]['message']['content']
 
         # Save assistant response
