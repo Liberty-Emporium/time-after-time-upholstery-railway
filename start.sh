@@ -23,6 +23,18 @@ print('Admin user ready (password set to Mhall001!)')
 
 # Ensure SiteConfig singleton exists
 SiteConfig.get()
+
+# Enforce free-only model: if a non-free model is saved, fall back to a free one.
+from dashboard.models import FREE_MODELS
+FREE_IDS = [m[0] for m in FREE_MODELS]
+cfg = SiteConfig.get()
+if cfg.openrouter_model not in FREE_IDS:
+    cfg.openrouter_model = FREE_IDS[0]
+    cfg.save()
+    print('Coerced openrouter_model to free:', cfg.openrouter_model)
+else:
+    print('openrouter_model already free:', cfg.openrouter_model)
+
 print('SiteConfig ready')
 
 # ── Staff user: rhonda (replaces bryan) — idempotent, password set each deploy ──
