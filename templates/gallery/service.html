@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ svc.meta_title }}</title>
+    <meta name="description" content="{{ svc.meta_description }}">
+    <link rel="canonical" href="{{ site_url }}">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ info.name }}">
+    <meta property="og:title" content="{{ svc.meta_title }}">
+    <meta property="og:description" content="{{ svc.meta_description }}">
+    <meta property="og:url" content="{{ site_url }}">
+    <meta property="og:image" content="{{ og_image }}">
+    <meta property="og:locale" content="en_US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ svc.meta_title }}">
+    <meta name="twitter:description" content="{{ svc.meta_description }}">
+    <meta name="twitter:image" content="{{ og_image }}">
+    <style>
+        :root {
+            --gold: #C8A24B; --gold-dark: #9c7d2f; --green: #1f5f3a; --green-dark: #16432a;
+            --white: #ffffff; --bg: #f7f6f2; --text: #1f1d18; --text-muted: #6b6660;
+            --border: #e6e1d6; --shadow: 0 2px 12px rgba(0,0,0,0.10); --black: #1a1814;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+        header { background: var(--black); padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; border-bottom: 3px solid var(--gold); }
+        header .logo { color: var(--white); font-size: 1.3rem; font-weight: 700; letter-spacing: -0.3px; }
+        header .logo span { color: var(--gold); font-weight: 400; }
+        nav a { color: var(--white); text-decoration: none; margin-left: 20px; font-size: 0.9rem; font-weight: 500; opacity: 0.9; }
+        nav a:hover { opacity: 1; color: var(--gold); }
+        .crumb { max-width: 920px; margin: 24px auto 0; padding: 0 24px; font-size: 0.9rem; color: var(--text-muted); }
+        .crumb a { color: var(--gold); text-decoration: none; }
+        .hero { background: linear-gradient(135deg, #1a1814 0%, #2b2616 55%, #4a3a14 100%); color: var(--white); padding: 56px 24px 48px; text-align: center; }
+        .hero-content { max-width: 820px; margin: 0 auto; }
+        .hero h1 { font-size: 2.4rem; font-weight: 800; margin-bottom: 14px; letter-spacing: -0.5px; }
+        .hero h1 span { color: var(--gold); }
+        .hero p { font-size: 1.1rem; opacity: 0.92; margin-bottom: 24px; }
+        .btn { display: inline-block; background: var(--gold); color: var(--black); padding: 14px 40px; border-radius: 30px; text-decoration: none; font-weight: 700; transition: background 0.2s, transform 0.2s; }
+        .btn:hover { background: var(--gold-dark); transform: translateY(-2px); }
+        section { padding: 56px 24px; max-width: 920px; margin: 0 auto; }
+        section h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 16px; color: var(--green); }
+        .intro { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 28px; }
+        ul.bullets { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; margin-bottom: 32px; }
+        ul.bullets li { background: var(--white); padding: 14px 18px; border-radius: 12px; box-shadow: var(--shadow); border-left: 3px solid var(--gold); font-size: 1rem; }
+        .cta { background: var(--green); color: var(--white); border-radius: 18px; padding: 40px; text-align: center; margin: 0 24px 40px; }
+        .cta a { color: var(--white); }
+        .cta .btn { background: var(--white); color: var(--green); }
+        .cta .btn:hover { background: var(--gold-light, #f7f0df); }
+        .other-services { background: var(--white); border-radius: 16px; padding: 32px; box-shadow: var(--shadow); }
+        .other-services h3 { font-size: 1.2rem; margin-bottom: 16px; color: var(--green); }
+        .other-services a { display: inline-block; margin: 6px 8px 6px 0; padding: 8px 16px; background: var(--bg); border: 1px solid var(--border); border-radius: 20px; color: var(--text); text-decoration: none; font-size: 0.9rem; }
+        .other-services a:hover { border-color: var(--gold); color: var(--gold-dark); }
+        footer { text-align: center; padding: 30px 24px; color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--gold); text-decoration: none; }
+        @media (max-width: 768px) { .hero h1 { font-size: 1.8rem; } ul.bullets { grid-template-columns: 1fr; } header { flex-direction: column; gap: 8px; } nav a { margin: 0 10px; } }
+    </style>
+    <script type="application/ld+json">
+    {{ json_ld|safe }}
+    </script>
+</head>
+<body>
+<header>
+    <div class="logo">{{ info.name }} <span>| Est. {% now "Y" %}</span></div>
+    <nav>
+        <a href="/#services">Services</a>
+        <a href="/#gallery">Gallery</a>
+        <a href="/#contact">Contact</a>
+    </nav>
+</header>
+
+<div class="crumb"><a href="/">Home</a> &rsaquo; {{ svc.h1 }}</div>
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>{{ svc.h1 }}</h1>
+        <p>{{ svc.meta_description }}</p>
+        <a href="tel:3363286480" class="btn">&#9742; Call {{ info.phone }}</a>
+    </div>
+</section>
+
+<section>
+    <h2>About This Service</h2>
+    <p class="intro">{{ svc.intro }}</p>
+    <ul class="bullets">
+        {% for b in svc.bullets %}<li>{{ b }}</li>{% endfor %}
+    </ul>
+</section>
+
+<div class="cta">
+    <h2 style="color:var(--white)">Get a Free Estimate</h2>
+    <p style="opacity:0.85;margin:10px 0 24px">{{ info.name }} serves Liberty, NC and surrounding communities by appointment.</p>
+    <a href="tel:3363286480" class="btn">&#9742; Call {{ info.phone }}</a>
+</div>
+
+<section class="other-services">
+    <h3>Other Services</h3>
+    {% for key, s in services.items %}
+        {% if key != svc.slug %}<a href="/services/{{ s.slug }}/">{{ s.h1 }}</a>{% endif %}
+    {% endfor %}
+</section>
+
+<footer>
+    <p>&copy; {% now "Y" %} {{ info.name }} &bull; {{ info.address }} &bull; {{ info.phone }}</p>
+    <p style="margin-top:6px">Website built with &#128154; by Alexander AI Solutions</p>
+</footer>
+</body>
+</html>

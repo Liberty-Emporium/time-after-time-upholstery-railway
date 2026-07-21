@@ -387,6 +387,8 @@
         <a href="#services">Services</a>
         <a href="#gallery">Gallery</a>
         <a href="#contact">Contact</a>
+        <a href="/services/reupholstery/">Reupholstery</a>
+        <a href="/services/custom-cushions/">Cushions</a>
         {% if user.is_authenticated %}
         <a href="{% url 'dashboard_home' %}" class="admin-link">Dashboard</a>
         {% else %}
@@ -446,31 +448,31 @@
     <h2>Our Services</h2>
     <p class="subtitle">From a single cushion to a full antique restoration</p>
     <div class="services-grid">
-        <div class="service-card">
+        <a class="service-card" href="/services/reupholstery/">
             <div class="icon">&#128701;</div>
             <h3>Reupholstery</h3>
             <p>Chairs, sofas, loveseats &amp; sectionals. New fabric, new life, same frame you love.</p>
-        </div>
-        <div class="service-card">
+        </a>
+        <a class="service-card" href="/services/custom-cushions/">
             <div class="icon">&#129681;</div>
             <h3>Custom Cushions</h3>
             <p>Window seats, bench cushions, and replacement foam cut to fit your piece perfectly.</p>
-        </div>
-        <div class="service-card">
+        </a>
+        <a class="service-card" href="/services/antique-restoration/">
             <div class="icon">&#128296;</div>
             <h3>Antique Restoration</h3>
             <p>Delicate restoration of heirloom and antique furniture, done with care.</p>
-        </div>
-        <div class="service-card">
+        </a>
+        <a class="service-card" href="/services/leather-repair/">
             <div class="icon">&#129532;</div>
             <h3>Leather Repair</h3>
             <p>Crack repair, recoloring, and conditioning for leather furniture.</p>
-        </div>
-        <div class="service-card">
+        </a>
+        <a class="service-card" href="/services/outdoor-patio/">
             <div class="icon">&#127968;</div>
             <h3>Outdoor &amp; Patio</h3>
             <p>Weather-resistant cushions and reupholstery for outdoor furniture.</p>
-        </div>
+        </a>
         <div class="service-card">
             <div class="icon">&#128241;</div>
             <h3>Free Estimates</h3>
