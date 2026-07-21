@@ -295,9 +295,14 @@ def chat_api(request):
             resp_text = _he.read().decode("utf-8", "replace")
 
         if status_code != 200:
-            error_detail = resp_text[:500]
+            # Surface OpenRouter's real error so failures are diagnosable
+            try:
+                orr = json.loads(resp_text)
+                or_msg = orr.get("error", {}).get("message") or resp_text[:300]
+            except Exception:
+                or_msg = resp_text[:300]
             return JsonResponse({
-                'error': f'OpenRouter API error: {status_code}'
+                'error': f'OpenRouter API error {status_code}: {or_msg}'
             }, status=502)
 
         result = json.loads(resp_text)
