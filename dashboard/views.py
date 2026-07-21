@@ -348,7 +348,7 @@ FREE_MODELS = [
     ("openai/gpt-oss-20b:free", "💬 OpenAI GPT-OSS 20B — Friendly & reliable"),
     ("google/gemma-4-31b-it:free", "⚡ Google Gemma 4 31B — Fast & helpful"),
     ("nvidia/nemotron-nano-9b-v2:free", "🏃 Nemotron Nano 9B — Quick & light"),
-    ("tencent/hy3:free", "🌐 Tencent Hy3 — Balanced all-rounder"),
+    ("nvidia/nemotron-nano-12b-v2-vl:free", "🌐 Nemotron Nano 12B — Balanced all-rounder"),
 ]
 
 
