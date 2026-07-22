@@ -376,17 +376,22 @@
             .about-grid .image { order: -1; }
             .btn-outline { margin-left: 0; margin-top: 12px; }
             .contact-section { padding: 40px 20px; }
-            header { flex-direction: column; gap: 8px; }
+            header { flex-direction: column; gap: 8px; justify-content: center; align-items: center; text-align: center; }
+            .logo { text-align: center; }
+            nav { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; }
             nav a { margin: 0 10px; font-size: 0.85rem; }
+            .hero { text-align: center; }
+            .hero .logo, .hero-logo { margin-left: auto; margin-right: auto; }
             .services-grid { grid-template-columns: 1fr; }
             .gallery-grid { grid-template-columns: 1fr; }
             .contact-grid { grid-template-columns: 1fr; gap: 24px; }
             .why-grid { grid-template-columns: 1fr; }
-            .stats { flex-direction: column; }
-            .container { padding: 0 16px; }
-            section { padding: 48px 0; }
+            .stats { flex-direction: column; align-items: center; }
+            .container { padding: 0 16px; margin: 0 auto; }
+            section { padding: 48px 0; text-align: center; }
             .footer-grid { grid-template-columns: 1fr; gap: 24px; text-align: center; }
-            .footer-grid .footer-col { align-items: center; }
+            .footer-grid .footer-col { align-items: center; text-align: center; }
+            .gallery-card, .service-card, .why-card, .contact-item { text-align: center; align-items: center; }
         }
         @media (max-width: 420px) {
             .hero h1 { font-size: 1.6rem; }
@@ -402,7 +407,7 @@
 <body>
 
 <header>
-    <div class="logo">{{ info.name }} <span>| Est. {% now "Y" %}</span></div>
+    <div class="logo">{{ info.name }}</div>
     <nav>
         <a href="#about">About</a>
         <a href="#services">Services</a>
