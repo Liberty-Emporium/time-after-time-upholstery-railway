@@ -277,9 +277,9 @@ def chat_api(request):
         import urllib.request as _ureq
         import urllib.error as _uerr
         _payload = json.dumps({
-            "model": config.openrouter_model or "openai/gpt-4o-mini",
+            "model": config.openrouter_model or "openai/gpt-oss-20b:free",
             "messages": messages_list,
-            "max_tokens": 2000,
+            "max_tokens": 800,
         }).encode()
         _oreq = _ureq.Request(
             "https://openrouter.ai/api/v1/chat/completions",
