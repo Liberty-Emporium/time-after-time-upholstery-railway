@@ -20,6 +20,11 @@ def superuser_required(view_func):
     return user_passes_test(lambda u: u.is_superuser, login_url='/dashboard/login/')(view_func)
 
 
+def staff_required(view_func):
+    """Decorator that restricts access to staff (or superusers)."""
+    return user_passes_test(lambda u: u.is_staff or u.is_superuser, login_url='/dashboard/login/')(view_func)
+
+
 # ── Custom Login ──
 def dashboard_login(request):
     if request.user.is_authenticated:
@@ -191,7 +196,7 @@ def user_delete(request, user_id):
 
 # ── AI Chat API ──
 @login_required(login_url='/dashboard/login/')
-@superuser_required
+@staff_required
 def chat_page(request):
     config = SiteConfig.get()
     return render(request, 'dashboard/chat.html', {
@@ -200,7 +205,7 @@ def chat_page(request):
 
 
 @login_required(login_url='/dashboard/login/')
-@superuser_required
+@staff_required
 @require_POST
 def chat_api(request):
     """Handle AI chat requests via OpenRouter"""
