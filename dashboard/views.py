@@ -279,7 +279,8 @@ def chat_api(request):
         _payload = json.dumps({
             "model": config.openrouter_model or "openai/gpt-oss-20b:free",
             "messages": messages_list,
-            "max_tokens": 800,
+            "max_tokens": 500,
+            "reasoning": {"effort": "low"},
         }).encode()
         _oreq = _ureq.Request(
             "https://openrouter.ai/api/v1/chat/completions",
