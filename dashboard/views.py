@@ -292,12 +292,16 @@ def chat_api(request):
             },
         )
         try:
-            _oresp = _ureq.urlopen(_oreq, timeout=60)
+            _oresp = _ureq.urlopen(_oreq, timeout=100)
             status_code = _oresp.status
             resp_text = _oresp.read().decode("utf-8", "replace")
         except _uerr.HTTPError as _he:
             status_code = _he.code
             resp_text = _he.read().decode("utf-8", "replace")
+        except (TimeoutError, OSError) as _te:
+            return JsonResponse({
+                'error': 'The AI model took too long to respond. Please try again — free models can be slow under load.'
+            }, status=504)
 
         if status_code != 200:
             # Surface OpenRouter's real error so failures are diagnosable

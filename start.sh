@@ -139,4 +139,4 @@ print('Seeded', count, 'gallery photos')
 python manage.py collectstatic --noinput --clear
 
 # Start server
-exec gunicorn config.wsgi --log-file - --bind 0.0.0.0:${PORT:-8080}
+exec gunicorn config.wsgi --log-file - --timeout 120 --bind 0.0.0.0:${PORT:-8080}
