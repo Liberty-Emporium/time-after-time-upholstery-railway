@@ -9,6 +9,9 @@ DEBUG = os.environ.get('DJANGO_DEBUG', 'True').lower() in ('true', '1')
 
 ALLOWED_HOSTS = ['*']
 
+# ── Canonical domain for SEO (301-redirect railway.app -> this) ──
+PRIMARY_DOMAIN = os.environ.get('PRIMARY_DOMAIN', 'timeaftertimeupholstery.com')
+
 # ── Railway / Production security ──
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = not DEBUG
@@ -33,6 +36,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'gallery.canonical_redirect.CanonicalDomainRedirectMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

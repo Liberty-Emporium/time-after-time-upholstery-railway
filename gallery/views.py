@@ -194,3 +194,9 @@ def sitemap(request):
         )
     xml.append('</urlset>')
     return HttpResponse('\n'.join(xml), content_type='application/xml')
+
+
+def robots_txt(request):
+    site = request.build_absolute_uri('/').rstrip('/')
+    body = f"User-agent: *\nAllow: /\nSitemap: {site}/sitemap.xml\n"
+    return HttpResponse(body, content_type='text/plain')
