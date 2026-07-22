@@ -163,11 +163,8 @@
             width: fit-content;
             max-width: 320px;
             margin: 0 auto;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
         }
-        .about-grid .image img { width: 100%; max-width: 320px; max-height: 360px; height: auto; display: block; margin: 0 auto; object-fit: contain; }
+        .about-grid .image img { width: 100%; max-width: 300px; max-height: 360px; height: auto; display: block; margin: 0 auto; object-fit: contain; }
         .about-grid h3 { font-size: 1.5rem; margin-bottom: 16px; color: var(--green); }
         .about-grid p { color: var(--text-muted); margin-bottom: 12px; font-size: 1.05rem; }
         .about-grid .stats { display: flex; gap: 32px; margin-top: 24px; flex-wrap: wrap; }
@@ -444,13 +441,7 @@
     <p class="subtitle">Fine upholstery craftsmanship in Liberty, NC</p>
     <div class="about-grid">
         <div class="image">
-            {% with featured_photos.first as fp %}
-            {% if fp %}
-            <img src="{{ fp.image.url }}" alt="{{ fp.title }}" loading="lazy" decoding="async" style="max-width:100%; height:auto;">
-            {% else %}
-            <img src="{% static 'brand/tat-emblem.png' %}" alt="{{ info.name }}" loading="lazy">
-            {% endif %}
-            {% endwith %}
+            <img src="{% static 'brand/tat-emblem.png' %}" alt="{{ info.name }} — sewing machine emblem" loading="lazy" decoding="async">
         </div>
         <div>
             <h3>Craftsmanship You Can Sit On</h3>
