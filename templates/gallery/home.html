@@ -164,7 +164,7 @@
             overflow: hidden;
             box-shadow: var(--shadow);
         }
-        .about-grid .image img { width: 100%; display: block; }
+        .about-grid .image img { width: 100%; max-width: 320px; max-height: 360px; height: auto; display: block; margin: 0 auto; object-fit: contain; }
         .about-grid h3 { font-size: 1.5rem; margin-bottom: 16px; color: var(--green); }
         .about-grid p { color: var(--text-muted); margin-bottom: 12px; font-size: 1.05rem; }
         .about-grid .stats { display: flex; gap: 32px; margin-top: 24px; flex-wrap: wrap; }
@@ -423,7 +423,7 @@
         <div class="image">
             {% with featured_photos.first as fp %}
             {% if fp %}
-            <img src="{{ fp.image.url }}" alt="{{ fp.title }}" width="1600" height="1200" loading="lazy" decoding="async">
+            <img src="{{ fp.image.url }}" alt="{{ fp.title }}" loading="lazy" decoding="async" style="max-width:100%; height:auto;">
             {% else %}
             <img src="{% static 'brand/tat-emblem.png' %}" alt="{{ info.name }}" loading="lazy">
             {% endif %}
