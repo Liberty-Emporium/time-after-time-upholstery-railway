@@ -315,7 +315,14 @@ def chat_api(request):
             }, status=502)
 
         result = json.loads(resp_text)
-        assistant_message = result['choices'][0]['message']['content']
+        choices = result.get('choices') or []
+        if not choices:
+            # Free models occasionally return a 200 with no choices (rate-limit / empty)
+            api_err = (result.get('error') or {}).get('message') if isinstance(result.get('error'), dict) else result.get('error')
+            return JsonResponse({
+                'error': api_err or 'The AI model returned no response. Please try again — free models can be flaky under load.'
+            }, status=502)
+        assistant_message = choices[0]['message']['content']
 
         # Save assistant response
         ChatMessage.objects.create(
