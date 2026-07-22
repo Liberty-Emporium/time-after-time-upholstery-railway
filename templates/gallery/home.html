@@ -518,7 +518,7 @@
         {% for photo in photos %}
         <div class="gallery-card" onclick="openLightbox('{{ photo.image.url }}', '{{ photo.title|escapejs }}')">
             <div class="photo-frame">
-                <img src="{{ photo.image.url }}" alt="{{ photo.title }}" width="1600" height="1200" loading="lazy" decoding="async">
+                <img src="{{ photo.image.url }}" alt="{{ photo.title }}" loading="lazy" decoding="async" style="max-width:100%; height:auto;">
             </div>
             <div class="card-body">
                 <span class="card-category">{{ photo.get_category_display }}</span>
