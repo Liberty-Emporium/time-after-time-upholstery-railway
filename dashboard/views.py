@@ -322,7 +322,11 @@ def chat_api(request):
             return JsonResponse({
                 'error': api_err or 'The AI model returned no response. Please try again — free models can be flaky under load.'
             }, status=502)
-        assistant_message = choices[0]['message']['content']
+        assistant_message = choices[0].get('message', {}).get('content')
+        if not assistant_message:
+            # Some free models (e.g. nemotron-nano) return null content w/ reasoning only
+            assistant_message = (choices[0].get('message', {}).get('reasoning')
+                                 or 'The AI model returned an empty answer. Please try again or pick a different model in AI Model settings.')
 
         # Save assistant response
         ChatMessage.objects.create(
