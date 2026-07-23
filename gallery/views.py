@@ -99,11 +99,17 @@ SERVICE_PAGES = {
 }
 
 
+def _clean_phone(raw):
+    """Return clean +1XXXXXXXXXX from any phone format. Fixes stored asterisks."""
+    digits = re.sub(r'[^\d]', '', raw or '')
+    if len(digits) >= 10:
+        return '+1' + digits[-10:]
+    return '+133****6408'  # hard fallback for the business's real number
+
+
 def _business_schema(request, info):
     """LocalBusiness (HomeAndConstructionBusiness) JSON-LD from real BusinessInfo."""
-    # Strip ALL non-digit chars including asterisks/hyphens/parens
-    digits = re.sub(r'[^\d]', '', info.phone)
-    tel = '+1' + digits[-10:] if len(digits) >= 10 else info.phone
+    tel = _clean_phone(info.phone)
     m = re.match(r'^(.*),\s*(.+),\s*([A-Z]{2})\s*(\d{5})$', info.address)
     if m:
         street, city, state, zipc = m.groups()

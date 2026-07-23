@@ -83,6 +83,7 @@ else:
 # Seed BusinessInfo with the correct upholstery details
 python manage.py shell -c "
 from gallery.models import BusinessInfo
+import re
 info = BusinessInfo.get()
 info.name = 'Time After Time Upholstery'
 info.tagline = 'Liberty, NC — Quality Upholstery'
@@ -92,6 +93,12 @@ info.hours = 'Mon–Fri: 9:00 AM – 4:00 PM'
 info.about_text = 'Time After Time Upholstery is Liberty\\'s trusted upholstery shop. We bring worn and beloved furniture back to life — from a single dining chair to a treasured antique sofa passed down through generations. Every piece is personal: we measure, we rebuild, and we stand behind our work with pride.'
 info.years_in_business = 10
 info.save()
+# Double-check: verify stored phone has no asterisks
+info.refresh_from_db()
+if '*' in info.phone:
+    info.phone = '(336) 328-6408'
+    info.save()
+    print('BusinessInfo phone fixed (was masked)')
 print('BusinessInfo seeded')
 "
 
