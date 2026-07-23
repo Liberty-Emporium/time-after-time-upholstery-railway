@@ -101,7 +101,8 @@ SERVICE_PAGES = {
 
 def _business_schema(request, info):
     """LocalBusiness (HomeAndConstructionBusiness) JSON-LD from real BusinessInfo."""
-    digits = re.sub(r'\D', '', info.phone)
+    # Strip ALL non-digit chars including asterisks/hyphens/parens
+    digits = re.sub(r'[^\d]', '', info.phone)
     tel = '+1' + digits[-10:] if len(digits) >= 10 else info.phone
     m = re.match(r'^(.*),\s*(.+),\s*([A-Z]{2})\s*(\d{5})$', info.address)
     if m:
